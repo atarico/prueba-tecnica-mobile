@@ -39,10 +39,6 @@ const styles = StyleSheet.create({
         padding: 6,
         borderRadius: 8,
         width: 200,
-        justifyContent: "flex-end",
-        flexDirection: "column",
-
-
     },
     productImage: {
         width: "100%",
@@ -73,7 +69,7 @@ const styles = StyleSheet.create({
         color: "green",
     },
     btn: {
-        backgroundColor: "#0594a4",
+        backgroundColor: "#4cc671",
         padding: 10,
         borderRadius: 10,
         marginTop: "20%",
