@@ -2,6 +2,8 @@ import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useState } from "react";
 import { FlatList, Platform, ScrollView, StyleSheet, Text, View } from "react-native";
 import ProductItem from "../../components/CardProduct/CardProduct";
+import CategoryModal from '../../components/CategoryModal/CategoryModal';
+import Header from '../../components/Header/Header';
 import fetchApi from "../../utils/fetch";
 
 const Home = () => {
@@ -48,12 +50,16 @@ const Home = () => {
     );
     return (
         <View style={styles.container}>
-            <FlatList
-                data={productsByCategory}
-                keyExtractor={(item, index) => index.toString()}
-                renderItem={renderCategory}
-            />
-            <StatusBar style="light" />
+            <Header />
+            <CategoryModal />
+            <View>
+                <FlatList
+                    data={productsByCategory}
+                    keyExtractor={(item, index) => index.toString()}
+                    renderItem={renderCategory}
+                />
+                <StatusBar style="light" />
+            </View>
         </View>
     );
 }
@@ -61,6 +67,7 @@ const Home = () => {
 const styles = StyleSheet.create({
     container: {
         paddingTop: Platform.OS === "android" && 50,
+        paddingBottom: 100,
         flex: 1,
         paddingHorizontal: 20,
         backgroundColor: '#173b48',

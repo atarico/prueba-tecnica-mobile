@@ -2,10 +2,10 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from "react";
-//Icons
+
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-//Screens
+
 import Cart from "../screens/Cart/CartScreen";
 import Home from "../screens/Home/HomeScreen";
 import ProductDetail from "../screens/ProductsDetails/ProductDetailScreen";

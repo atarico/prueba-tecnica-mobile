@@ -1,6 +1,7 @@
 import { useRoute } from "@react-navigation/native";
 import React, { useState } from "react";
 import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import AddCartButton from "../../components/AddCartButton/AddCartButton";
 
 const ProductDetail = () => {
     const { params } = useRoute();
@@ -10,31 +11,63 @@ const ProductDetail = () => {
         setSelectedImage(imageUrl);
     };
 
+    const calculateTotalPrice = () => {
+        const price = params.product.price || 0;
+        const discountPercentage = params.product.discountPercentage || 0;
+        return (price - (price * discountPercentage) / 100).toFixed(2);
+    };
+
+    const renderPriceWithoutDiscount = () => {
+        const priceWithoutDiscount = params.product.price || 0;
+        const discountPercentage = params.product.discountPercentage || 0;
+        const discountedPrice = calculateTotalPrice();
+
+        if (discountPercentage > 0) {
+            return (
+                <Text style={styles.priceWithoutDiscountStriked}>
+                    ${priceWithoutDiscount.toFixed(2)}
+                </Text>
+            );
+        } else {
+            return (
+                <Text style={styles.priceWithoutDiscount}>
+                    ${priceWithoutDiscount.toFixed(2)}
+                </Text>
+            );
+        }
+    };
+
     return (
         <View style={styles.container}>
             <View style={styles.content}>
-                <View>
-                    <Image source={{ uri: selectedImage }} style={styles.productImage} />
-                    <Text style={styles.title}>{params.product.title}</Text>
-                    <Text style={styles.description}>{params.product.description}</Text>
-                </View>
-                <ScrollView horizontal contentContainerStyle={styles.imageGallery}>
+                <Image source={{ uri: selectedImage }} style={styles.productImage} />
+                <ScrollView horizontal contentContainerStyle={styles.imageGalleryContainer} style={styles.imageGallery}>
                     {params.product.images.map((imageUrl, index) => (
                         <TouchableOpacity key={index} onPress={() => handleImagePress(imageUrl)}>
                             <Image source={{ uri: imageUrl }} style={styles.galleryImage} />
                         </TouchableOpacity>
                     ))}
                 </ScrollView>
+                <View style={styles.infoContainer}>
+                    <View>
+                        <Text style={styles.title}>{params.product.title}</Text>
+                        <Text style={styles.description}>{params.product.description}</Text>
+                    </View>
+                    <View style={styles.priceContainer}>
+                        <View>
+                            {renderPriceWithoutDiscount()}
+                            <Text style={styles.discount}>% {params.product.discountPercentage}</Text>
+                        </View>
+                        <View>
+                            <Text style={styles.totalToPayText}>Total:</Text>
+                            <Text style={styles.totalToPayNumber}>
+                                {calculateTotalPrice()}
+                            </Text>
+                        </View>
+                    </View>
+                </View>
 
-                <TouchableOpacity
-                    // onPress={handleViewPress}
-                    style={styles.btn}
-                >
-                    <Text style={styles.btnText}
-                    >
-                        Add to Cart
-                    </Text>
-                </TouchableOpacity>
+                <AddCartButton />
             </View>
         </View>
     );
@@ -48,34 +81,27 @@ const styles = StyleSheet.create({
     },
     content: {
         flex: 1,
-        marginVertical: 40,
-        justifyContent: "space-between",
         backgroundColor: "#296075",
         padding: 20,
         borderRadius: 10,
     },
     productImage: {
         width: "100%",
-        height: 200,
+        height: 230,
         borderRadius: 8,
         resizeMode: "cover",
     },
-    title: {
-        fontSize: 20,
-        fontWeight: "bold",
-        marginVertical: 20,
-        color: "#fff",
-    },
-    description: {
-        fontSize: 18,
-        color: "#fff",
-    },
     imageGallery: {
+        flex: 1,
         marginTop: 20,
-        maxHeight: 150,
+        marginBottom: 20,
+        maxHeight: 130,
         backgroundColor: "#0594a4",
-        alignItems: "center",
+        borderRadius: 10,
         paddingHorizontal: 10,
+    },
+    imageGalleryContainer: {
+        alignItems: "center",
     },
     galleryImage: {
         width: 100,
@@ -84,18 +110,52 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         resizeMode: "cover",
     },
-    btn: {
-        backgroundColor: "#4cc671",
+    infoContainer: {
+        backgroundColor: "#f5f5f5",
         padding: 10,
         borderRadius: 10,
-        marginTop: "20%",
-        width: "100%",
-        alignSelf: "center"
     },
-    btnText: {
-        color: "#f5f5f5",
-        alignSelf: "center",
+    title: {
+        fontSize: 20,
         fontWeight: "bold",
+        marginVertical: 20,
+        color: "#000",
+    },
+    description: {
+        fontSize: 18,
+        color: "#333",
+        marginLeft: 10,
+    },
+    priceContainer: {
+        marginTop: 20,
+        flexDirection: "row",
+        justifyContent: "space-around",
+        alignItems: "center",
+    },
+    priceWithoutDiscount: {
+        fontSize: 20,
+        fontWeight: "bold",
+        color: "#000",
+    },
+    priceWithoutDiscountStriked: {
+        fontSize: 20,
+        color: "#f00",
+        textDecorationLine: "line-through",
+    },
+    discount: {
+        fontSize: 16,
+        color: "#000",
+        fontWeight: "bold",
+    },
+    totalToPayText: {
+        fontSize: 20,
+        fontWeight: "bold",
+        color: "#000",
+    },
+    totalToPayNumber: {
+        fontSize: 26,
+        fontWeight: "bold",
+        color: "#4cc671",
     },
 });
 
