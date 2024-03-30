@@ -1,32 +1,26 @@
+// Home.js
 import { StatusBar } from 'expo-status-bar';
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { FlatList, Platform, ScrollView, StyleSheet, Text, View } from "react-native";
 import ProductItem from "../../components/CardProduct/CardProduct";
 import CategoryModal from '../../components/CategoryModal/CategoryModal';
 import Header from '../../components/Header/Header';
-import fetchApi from "../../utils/fetch";
+import ProductsList from '../../utils/ProductsList';
 
 const Home = () => {
     const [productsByCategory, setProductsByCategory] = useState([]);
-    useEffect(() => {
-        const loadAllProduct = async () => {
-            try {
-                const allProductsResponse = await fetchApi('products');
-                if (allProductsResponse && allProductsResponse.products) {
-                    const productsGroupedByCategory = groupProductsByCategory(allProductsResponse.products);
-                    setProductsByCategory(productsGroupedByCategory);
-                } else {
-                    throw new Error('Products data is invalid');
-                }
-            } catch (error) {
-                console.error('Error loading all products', error);
-                setProductsByCategory([]);
-            }
-        };
 
-        loadAllProduct();
-    }, []);
+    const handleProductsLoaded = (products) => {
+        const productsGroupedByCategory = groupProductsByCategory(products);
+        setProductsByCategory(productsGroupedByCategory);
+    };
+
     const groupProductsByCategory = (products) => {
+        if (!Array.isArray(products)) {
+            console.error("Invalid products data", products);
+            return [];
+        }
+
         const groupedProducts = {};
         products.forEach(product => {
             if (!groupedProducts[product.category]) {
@@ -36,6 +30,7 @@ const Home = () => {
         });
         return Object.entries(groupedProducts).map(([category, products]) => ({ category, products }));
     };
+
     const renderCategory = ({ item }) => (
         <View style={styles.categoryContainer}>
             <Text style={styles.categoryTitle}>{item.category}</Text>
@@ -48,10 +43,12 @@ const Home = () => {
             </ScrollView>
         </View>
     );
+
     return (
         <View style={styles.container}>
             <Header />
             <CategoryModal />
+            <ProductsList onProductsLoaded={handleProductsLoaded} />
             <View>
                 <FlatList
                     data={productsByCategory}
@@ -63,6 +60,7 @@ const Home = () => {
         </View>
     );
 }
+
 
 const styles = StyleSheet.create({
     container: {

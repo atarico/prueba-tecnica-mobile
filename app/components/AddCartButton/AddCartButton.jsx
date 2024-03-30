@@ -1,7 +1,6 @@
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
 const AddCartButton = () => {
-
     return (
         <TouchableOpacity style={styles.btn}>
             <Text style={styles.btnText}>
