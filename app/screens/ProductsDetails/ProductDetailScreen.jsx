@@ -1,11 +1,16 @@
 import { useRoute } from "@react-navigation/native";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import AddCartButton from "../../components/AddCartButton/AddCartButton";
+import { CartContext } from "../../context/CartContext";
+
+{/* <MaterialCommunityIcons name="home" color={color} size={30} /> */ }
+// import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const ProductDetail = () => {
     const { params } = useRoute();
     const [selectedImage, setSelectedImage] = useState(params.product.thumbnail);
+    const { addToCart } = useContext(CartContext);
 
     const handleImagePress = (imageUrl) => {
         setSelectedImage(imageUrl);
@@ -56,7 +61,7 @@ const ProductDetail = () => {
                     <View style={styles.priceContainer}>
                         <View>
                             {renderPriceWithoutDiscount()}
-                            <Text style={styles.discount}>% {params.product.discountPercentage}</Text>
+                            <Text style={styles.discount}>% {params.product.discountPercentage} OFF</Text>
                         </View>
                         <View>
                             <Text style={styles.totalToPayText}>Total:</Text>
@@ -67,7 +72,9 @@ const ProductDetail = () => {
                     </View>
                 </View>
 
-                <AddCartButton />
+                <AddCartButton
+                    onPress={() => addToCart(params.product)}
+                />
             </View>
         </View>
     );

@@ -1,8 +1,8 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from "react";
-import { FlatList, Platform, ScrollView, StyleSheet, Text, View } from "react-native";
+import { FlatList, Platform, SafeAreaView, ScrollView, StyleSheet, Text, View } from "react-native";
 import ProductItem from "../../components/CardProduct/CardProduct";
-import CategoryModal from '../../components/CategoryModal/CategoryModal';
+// import CategoryModal from '../../components/CategoryModal/CategoryModal';
 import Header from '../../components/Header/Header';
 import ProductsList from '../../utils/ProductsList';
 
@@ -42,11 +42,10 @@ const Home = () => {
             </ScrollView>
         </View>
     );
-
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             <Header />
-            <CategoryModal />
+            {/* <CategoryModal /> */}
             <ProductsList onProductsLoaded={handleProductsLoaded} />
             <View>
                 <FlatList
@@ -56,7 +55,7 @@ const Home = () => {
                 />
                 <StatusBar style="light" />
             </View>
-        </View>
+        </SafeAreaView>
     );
 }
 

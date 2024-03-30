@@ -1,7 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import AddCartButton from "../AddCartButton/AddCartButton";
 
 const ProductItem = ({ product }) => {
     const { navigate } = useNavigation();
@@ -17,10 +16,10 @@ const ProductItem = ({ product }) => {
             <Image source={{ uri: product.thumbnail }} style={styles.productImage} />
             <View style={styles.productInfo}>
                 <Text style={styles.title}>{product.title}</Text>
-                <Text style={styles.description}>{product.description}</Text>
+                {/* <Text style={styles.description}>{product.description}</Text> */}
                 <Text style={styles.price}>Price: ${product.price}</Text>
             </View>
-            <AddCartButton />
+
         </TouchableOpacity>
     );
 };
@@ -44,6 +43,7 @@ const styles = StyleSheet.create({
         marginLeft: 10,
         justifyContent: "space-between",
         flex: 1,
+        paddingVertical: 10,
     },
     title: {
         fontSize: 16,

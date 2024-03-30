@@ -1,9 +1,12 @@
 import React from 'react';
+import { CartProvider } from './app/context/CartContext';
 import Navigation from './app/routes/Navigation';
 
 export default function App() {
   return (
-    <Navigation />
+    <CartProvider>
+      <Navigation />
+    </CartProvider>
   );
 }
 
