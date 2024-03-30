@@ -1,4 +1,3 @@
-// Home.js
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from "react";
 import { FlatList, Platform, ScrollView, StyleSheet, Text, View } from "react-native";
