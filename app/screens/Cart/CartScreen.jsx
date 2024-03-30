@@ -22,27 +22,35 @@ const Cart = () => {
 
     return (
         <View style={styles.container}>
-            <ScrollView style={styles.container}>
-                {cartItems.map((product, index) => (
-                    <View key={index} style={styles.content}>
-                        <Image source={{ uri: product.thumbnail }} style={styles.image} />
-                        <View style={styles.infoContainer}>
-                            <View>
-                                <Text style={styles.title}>{product.title}</Text>
-                            </View>
-                            <View style={styles.priceContainer}>
-                                <View>
-                                    <Text style={styles.price}>
-                                        ${(product.price - (product.price * product.discountPercentage) / 100).toFixed(2)}
-                                    </Text>
+            <ScrollView>
+                {
+                    cartItems.length === 0 ? (
+                        <Text style={styles.cartEmptyMessage}>
+                            Your cart is empty 😢
+                        </Text>
+                    ) :
+                        cartItems.map((product, index) => (
+                            <View key={index} style={styles.content}>
+                                <Image source={{ uri: product.thumbnail }} style={styles.image} />
+                                <View style={styles.infoContainer}>
+                                    <View>
+                                        <Text style={styles.title}>{product.title}</Text>
+                                    </View>
+                                    <View style={styles.priceContainer}>
+                                        <View>
+                                            <Text style={styles.price}>
+                                                ${(product.price - (product.price * product.discountPercentage) / 100).toFixed(2)}
+                                            </Text>
+                                        </View>
+                                    </View>
                                 </View>
+                                <TouchableOpacity style={styles.removeButton} onPress={() => handleRemoveFromCart(product.id)}>
+                                    <Text style={styles.removeButtonText}>Remove</Text>
+                                </TouchableOpacity>
                             </View>
-                        </View>
-                        <TouchableOpacity style={styles.removeButton} onPress={() => handleRemoveFromCart(product.id)}>
-                            <Text style={styles.removeButtonText}>Remove</Text>
-                        </TouchableOpacity>
-                    </View>
-                ))}
+                        ))
+
+                }
             </ScrollView>
             <View style={styles.totalToPayContainer}>
                 <Text style={styles.totalText}>Total:</Text>
@@ -55,8 +63,14 @@ const Cart = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        paddingHorizontal: 4,
+        paddingHorizontal: 6,
         backgroundColor: "#173b48",
+    },
+    cartEmptyMessage: {
+        fontSize: 20,
+        color: "#f5f5f5",
+        textAlign: "center",
+        marginTop: 60,
     },
     image: {
         width: 80,
